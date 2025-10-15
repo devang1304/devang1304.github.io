@@ -16,11 +16,6 @@ pnpm-debug.log*
 .idea/
 .vscode/
 
-# Dependency caches
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
 # Testing
 coverage/
 .nyc_output/
