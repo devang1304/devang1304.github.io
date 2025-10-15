@@ -1,0 +1,231 @@
+.timeline-section {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.timeline-body {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) 1fr;
+  align-items: stretch;
+  gap: 2rem;
+}
+
+.timeline-axis {
+  position: relative;
+  min-height: 100%;
+  height: 100%;
+  padding: 0.5rem 0 1.5rem;
+}
+
+.timeline-axis::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0.4rem;
+  width: 2px;
+  background: var(--color-border);
+  border-radius: 999px;
+}
+
+.timeline-axis::after {
+  content: "";
+  position: absolute;
+  left: 0.4rem;
+  width: 2px;
+  background: var(--color-accent);
+  border-radius: 999px;
+  opacity: var(--highlight-opacity, 0);
+  transition: top 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  top: var(--highlight-start);
+  height: calc(var(--highlight-end) - var(--highlight-start));
+}
+
+.timeline-axis-year {
+  position: absolute;
+  left: 1.6rem;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.timeline-axis-year::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -1.2rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  transform: translate(-50%, -50%);
+}
+
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+
+.timeline-card {
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.timeline-card:hover,
+.timeline-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  outline: none;
+}
+
+.timeline-card:hover .timeline-header,
+.timeline-card:focus-within .timeline-header {
+  color: var(--color-heading-muted);
+}
+
+.timeline-details {
+  display: grid;
+  gap: 0.6rem;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: max-height 0.22s ease, opacity 0.18s ease, transform 0.22s ease;
+}
+
+.timeline-card:hover .timeline-details,
+.timeline-card:focus-within .timeline-details {
+  max-height: 600px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.timeline-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.timeline-chip {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.timeline-chip.work {
+  background: rgba(255, 111, 97, 0.12);
+  color: var(--color-accent);
+}
+
+.timeline-chip.education {
+  background: rgba(83, 193, 134, 0.18);
+  color: #1d7a52;
+}
+
+.timeline-period {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.timeline-organization {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.timeline-summary {
+  color: var(--color-text);
+}
+
+.timeline-details .timeline-summary {
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.timeline-highlights {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timeline-empty {
+  padding: 1.75rem;
+  border-radius: 16px;
+  border: 1px dashed var(--color-border);
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 720px) {
+  .timeline-section {
+    padding: 2rem;
+  }
+
+  .timeline-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .timeline-card {
+    padding: 1.5rem;
+  }
+
+  .timeline-body {
+    grid-template-columns: minmax(100px, 120px) 1fr;
+    gap: 1.5rem;
+  }
+
+  .timeline-axis-year {
+    left: 1.4rem;
+    font-size: 0.7rem;
+  }
+}

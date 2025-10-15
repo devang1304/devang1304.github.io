@@ -1,0 +1,53 @@
+[
+  {
+    "id": "soc-llm-benchmark",
+    "name": "Evaluation Framework for SOC LLMs",
+    "period": "Jul 2025 — Present",
+    "summary": "Vendor-agnostic benchmark scoring LLM copilots for security operations across proactive and reactive workflows.",
+    "outcomes": [
+      "Normalizes multi-source logs into ECS/STIX schemas and aligns incidents to MITRE ATT&CK tactics.",
+      "Scores detection accuracy, hallucination rate, IOC extraction quality, latency, cost, and explainability depth across Anthropic, OpenAI, Gemini, LLaMA, DeepSeek, and Qwen."
+    ],
+    "tech": ["OpenAPI", "Hugging Face", "AWS Bedrock", "GCP Vertex AI", "Python", "Streamlit"],
+    "links": [
+      {
+        "label": "",
+        "href": ""
+      }
+    ]
+  },
+  {
+    "id": "financial-management-hub",
+    "name": "Financial Management Hub (Serverless AWS App)",
+    "period": "Feb 2025 — Apr 2025",
+    "summary": "Self-service finance automation leveraging Plaid and OpenAI to uncover spending insights with high availability.",
+    "outcomes": [
+      "Built on AWS Amplify, Lambda, and DynamoDB with Terraform and GitHub Actions for consistent, automated deploys.",
+      "Dockerized services and integrated cost guardrails to maintain 99.99% uptime with predictable billing."
+    ],
+    "tech": ["AWS Amplify", "AWS Lambda", "DynamoDB", "Terraform", "Docker", "GitHub Actions"],
+    "links": [
+      {
+        "label": "",
+        "href": ""
+      }
+    ]
+  },
+  {
+    "id": "travel-itinerary-planner",
+    "name": "Travel Itinerary Planner with Google ADK Agents",
+    "period": "May 2025 — Jun 2025",
+    "summary": "Multi-agent planning experience creating personalized itineraries with transparent decision-making.",
+    "outcomes": [
+      "Ranked attractions and itineraries with Google ADK agents orchestrated through Vertex AI and BigQuery.",
+      "Applied IAM and cost optimization controls ensuring a secure, scalable, and budget-aware platform."
+    ],
+    "tech": ["Google ADK", "Vertex AI", "BigQuery", "Cloud Functions"],
+    "links": [
+      {
+        "label": "",
+        "href": ""
+      }
+    ]
+  }
+]

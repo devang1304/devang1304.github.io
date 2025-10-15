@@ -1,0 +1,30 @@
+# Node / React builds
+node_modules/
+dist/
+build/
+
+# Logs and diagnostics
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor cruft
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Dependency caches
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Testing
+coverage/
+.nyc_output/
+
+# Env files
+.env
+.env.*

@@ -1,0 +1,36 @@
+{
+  "name": "Devang Dhanuka",
+  "title": "Explainable AI & Cloud Security Engineer",
+  "tagline": "Bridging transparent AI with resilient cloud systems for security teams.",
+  "description": "I build explainable AI workflows, cloud-native data pipelines, and automation that help security operations centers reason faster and trust their tooling.",
+  "location": "Rochester, NY",
+  "cta": {
+    "primary": {
+      "label": "View Resume",
+      "href": "Dev Resume v4.6.pdf",
+      "external": true
+    },
+    "secondary": {
+      "label": "Explore Projects",
+      "href": "#projects",
+      "external": false
+    }
+  },
+  "metrics": [
+    {
+      "label": "Explainable AI Research",
+      "value": "3+ studies",
+      "detail": "Temporal GNNs, SOC trust & usability"
+    },
+    {
+      "label": "Cloud Migrations",
+      "value": "3k+ users",
+      "detail": "Azure, Microsoft 365, governance automation"
+    },
+    {
+      "label": "Serverless & LLM Apps",
+      "value": "5+ builds",
+      "detail": "AWS, GCP, Vertex AI, Bedrock"
+    }
+  ]
+}
