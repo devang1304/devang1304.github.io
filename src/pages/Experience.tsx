@@ -12,7 +12,6 @@ export default function Experience() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
-  // Combine and sort data chronologically (newest first)
   const combinedData = [
     ...experienceData.map((d) => ({ ...d, type: "experience" as const })),
     ...educationData.map((d) => ({ ...d, type: "education" as const })),
@@ -20,8 +19,14 @@ export default function Experience() {
   ].sort((a, b) => {
     const getDate = (item: any) => {
       const dateStr = (item.period || item.date).split("--")[0].trim();
-      const [month, year] = dateStr.split(" ");
-      const monthIdx = [
+      const parts = dateStr.split(" ");
+
+      // Handle single-word dates like "2024"
+      if (parts.length === 1) {
+        return new Date(parseInt(parts[0]), 0);
+      }
+
+      const months = [
         "Jan",
         "Feb",
         "Mar",
@@ -34,8 +39,27 @@ export default function Experience() {
         "Oct",
         "Nov",
         "Dec",
-      ].indexOf(month);
-      return new Date(parseInt(year), monthIdx);
+      ];
+      const seasonMap: Record<string, number> = {
+        Spring: 3,
+        Summer: 6,
+        Fall: 9,
+        Winter: 11,
+      };
+
+      const [first, second] = parts;
+      const monthIdx = months.indexOf(first);
+
+      if (monthIdx !== -1) {
+        return new Date(parseInt(second), monthIdx);
+      }
+
+      // Handle "Summer 2024" format
+      if (first in seasonMap) {
+        return new Date(parseInt(second), seasonMap[first]);
+      }
+
+      return new Date(parseInt(second || first), 0);
     };
     return getDate(b).getTime() - getDate(a).getTime();
   });
@@ -58,7 +82,7 @@ export default function Experience() {
   };
 
   return (
-    <section id="experience" className="min-h-screen w-full py-12 px-4 md:px-8">
+    <section id="experience" className="min-h-screen w-full py-12 px-6 md:px-8">
       <SectionTitle
         title="Experience & Adventures"
         icon={Briefcase}
@@ -71,8 +95,8 @@ export default function Experience() {
         {/* Central Timeline Spine */}
         <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-300 md:-translate-x-1/2" />
 
-        {/* Timeline Items */}
-        <div className="flex flex-col -space-y-12 md:-space-y-12">
+        {/* Timeline Items - Responsive spacing: no overlap mobile, slight overlap tablet, more on desktop */}
+        <div className="flex flex-col space-y-6 md:-space-y-12 lg:-space-y-10">
           {combinedData.map((item: any, idx) => {
             const year = getItemYear(item);
             const prevYear = getItemYear(combinedData[idx - 1]);
@@ -82,7 +106,7 @@ export default function Experience() {
               <React.Fragment key={idx}>
                 {/* Year Marker */}
                 {(!prevYear || year !== prevYear) && (
-                  <div className="relative flex items-center justify-center py-2">
+                  <div className="relative flex items-center md:justify-center py-4 md:py-2 pl-6 md:pl-0">
                     <div className="absolute left-0 md:left-1/2 w-0.5 h-full bg-slate-300 md:-translate-x-1/2" />
                     <div className="relative z-10 bg-white px-4 py-2 border-2 border-black rounded-full shadow-[3px_3px_0px_#2d2d2d] font-mono text-sm font-bold">
                       {year}

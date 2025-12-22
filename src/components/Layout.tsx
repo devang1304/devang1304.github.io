@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Mail } from "lucide-react";
+import { Mail, Menu, X } from "lucide-react";
 import { DoodleSticker } from "./UIComponents";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [confetti, setConfetti] = useState<
     { id: number; x: number; y: number; emoji: string }[]
   >([]);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const location = useLocation();
 
   const triggerConfetti = (e: React.MouseEvent<HTMLElement>) => {
     const x = e.pageX;
     const y = e.pageY;
-    const newConfetti = Array.from({ length: 1 }).map((_, i) => ({
+    const newConfetti = Array.from({ length: 1 }).map(() => ({
       id: Math.random(),
       x,
       y,
@@ -35,7 +37,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }));
     setConfetti((c) => [...c, ...newConfetti]);
     setTimeout(() => {
-      setConfetti((c) => c.slice(newConfetti.length));
+      const idsToRemove = new Set(newConfetti.map((n) => n.id));
+      setConfetti((c) => c.filter((item) => !idsToRemove.has(item.id)));
     }, 2000);
   };
 
@@ -44,6 +47,66 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
+    setMobileMenuOpen(false);
+  };
+
+  // Track active section based on scroll position (only on home page)
+  useEffect(() => {
+    if (location.pathname !== "/") {
+      setActiveSection(null);
+      return;
+    }
+
+    const handleScroll = () => {
+      const sections = ["papers", "projects"];
+      const scrollPosition = window.scrollY + 150;
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(sectionId);
+            return;
+          }
+        }
+      }
+      setActiveSection(null);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [location.pathname]);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location]);
+
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  const isActiveLink = (path: string, hash?: string) => {
+    if (path === "/" && !hash) {
+      return location.pathname === "/" && activeSection === null;
+    }
+    if (hash === "papers") {
+      return activeSection === "papers";
+    }
+    return location.pathname === path;
   };
 
   return (
@@ -70,6 +133,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         }
         .animate-pop {
             animation: pop 1s ease-out forwards;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .animate-pop {
+                animation: none;
+                opacity: 0;
+            }
         }
       `}</style>
 
@@ -110,6 +179,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <span className="text-blue-500">&lt;/&gt;</span>
             <span>@devang1304</span>
           </Link>
+
+          {/* Desktop Nav */}
           <div className="hidden md:flex gap-6 font-hand text-lg">
             <Link
               to="/"
@@ -120,7 +191,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 }
               }}
               className={`hover:text-blue-600 transition-colors ${
-                location.pathname === "/" && !location.hash
+                isActiveLink("/")
                   ? "text-blue-600 underline decoration-wavy"
                   : ""
               }`}
@@ -130,7 +201,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {location.pathname === "/" ? (
               <button
                 onClick={() => scrollToSection("papers")}
-                className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer"
+                className={`hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer font-hand text-lg ${
+                  isActiveLink("/", "papers")
+                    ? "text-blue-600 underline decoration-wavy"
+                    : ""
+                }`}
               >
                 Publications
               </button>
@@ -145,7 +220,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link
               to="/experience"
               className={`hover:text-blue-600 transition-colors ${
-                location.pathname === "/experience"
+                isActiveLink("/experience")
                   ? "text-blue-600 underline decoration-wavy"
                   : ""
               }`}
@@ -153,8 +228,92 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               Experiences
             </Link>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setMobileMenuOpen(!mobileMenuOpen);
+            }}
+            className="md:hidden p-2 hover:bg-slate-100 rounded-full transition-colors"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        className={`fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300 ${
+          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+
+      {/* Mobile Menu Drawer */}
+      <div
+        className={`fixed top-0 right-0 h-full w-72 bg-white z-50 md:hidden transform transition-transform duration-300 ease-out shadow-[-4px_0_20px_rgba(0,0,0,0.15)] ${
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-6 pt-20">
+          <nav className="flex flex-col gap-4 font-hand text-xl">
+            <Link
+              to="/"
+              onClick={(e) => {
+                if (location.pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+                setMobileMenuOpen(false);
+              }}
+              className={`py-3 px-4 rounded-lg hover:bg-slate-100 transition-colors ${
+                isActiveLink("/") ? "bg-blue-50 text-blue-600" : ""
+              }`}
+            >
+              Home
+            </Link>
+            {location.pathname === "/" ? (
+              <button
+                onClick={() => scrollToSection("papers")}
+                className={`py-3 px-4 rounded-lg hover:bg-slate-100 transition-colors text-left font-hand text-xl ${
+                  isActiveLink("/", "papers") ? "bg-blue-50 text-blue-600" : ""
+                }`}
+              >
+                Publications
+              </button>
+            ) : (
+              <Link
+                to="/#papers"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-3 px-4 rounded-lg hover:bg-slate-100 transition-colors"
+              >
+                Publications
+              </Link>
+            )}
+            <Link
+              to="/experience"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`py-3 px-4 rounded-lg hover:bg-slate-100 transition-colors ${
+                isActiveLink("/experience") ? "bg-blue-50 text-blue-600" : ""
+              }`}
+            >
+              Experiences
+            </Link>
+          </nav>
+
+          <div className="mt-8 pt-6 border-t border-slate-200">
+            <a
+              href="mailto:devangdhanuka@gmail.com"
+              className="flex items-center gap-2 font-mono text-sm text-slate-600 hover:text-blue-600 transition-colors"
+            >
+              <Mail size={16} /> devangdhanuka@gmail.com
+            </a>
+          </div>
+        </div>
+      </div>
 
       <main className="relative z-20 max-w-6xl mx-auto pt-32 px-4 md:px-8 pb-20">
         {children}

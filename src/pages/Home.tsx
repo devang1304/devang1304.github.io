@@ -18,6 +18,7 @@ import {
   DoodleCard,
   StickyNote,
 } from "../components/UIComponents";
+import { FadeInOnScroll } from "../components/AnimationUtils";
 import {
   projectsData,
   publicationsData,
@@ -209,50 +210,51 @@ export default function Home() {
         <SectionTitle title="Projects" icon={Cpu} onClick={undefined} />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projectsData.map((proj, idx) => (
-            <DoodleCard
-              key={idx}
-              rotate={`${(idx % 3) - 1}deg`}
-              className="flex flex-col h-full"
-            >
-              <div className="flex-1">
-                <div className="h-12 w-12 bg-slate-900 text-white flex items-center justify-center rounded-lg mb-4 border-2 border-black shadow-[2px_2px_0px_#ccc]">
-                  <CodeIcon size={24} />
-                </div>
-                <h3 className="text-xl font-hand font-bold mb-2 leading-tight">
-                  {proj.title}
-                </h3>
-                <p className="font-mono text-xs text-blue-600 mb-3 font-bold">
-                  {proj.tech}
-                </p>
-                <p className="font-hand text-slate-600 text-lg mb-4">
-                  {proj.desc}
-                </p>
-              </div>
-              <div className="pt-4 border-t-2 border-dashed border-slate-200 mt-auto flex justify-between items-center">
-                <span className="font-mono text-xs bg-slate-100 px-2 py-1 rounded border border-slate-300">
-                  {proj.period}
-                </span>
-                {/* @ts-ignore */}
-                {proj.isPrivate ? (
-                  <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 text-slate-500 font-mono text-xs rounded-full border-2 border-slate-300 cursor-not-allowed opacity-80">
-                    <Lock size={14} />
-                    Private
+            <FadeInOnScroll key={idx} delay={idx * 100}>
+              <DoodleCard
+                rotate={`${(idx % 3) - 1}deg`}
+                className="flex flex-col h-full"
+              >
+                <div className="flex-1">
+                  <div className="h-12 w-12 bg-slate-900 text-white flex items-center justify-center rounded-lg mb-4 border-2 border-black shadow-[2px_2px_0px_#ccc]">
+                    <CodeIcon size={24} />
                   </div>
-                ) : (
-                  proj.link && (
-                    <a
-                      href={proj.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-center gap-1 px-3 py-1.5 bg-slate-900 text-white font-mono text-xs rounded-full border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-slate-700 hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] transition-all"
-                    >
-                      <Github size={14} />
-                      Code
-                    </a>
-                  )
-                )}
-              </div>
-            </DoodleCard>
+                  <h3 className="text-xl font-hand font-bold mb-2 leading-tight">
+                    {proj.title}
+                  </h3>
+                  <p className="font-mono text-xs text-blue-600 mb-3 font-bold">
+                    {proj.tech}
+                  </p>
+                  <p className="font-hand text-slate-600 text-lg mb-4">
+                    {proj.desc}
+                  </p>
+                </div>
+                <div className="pt-4 border-t-2 border-dashed border-slate-200 mt-auto flex justify-between items-center">
+                  <span className="font-mono text-xs bg-slate-100 px-2 py-1 rounded border border-slate-300">
+                    {proj.period}
+                  </span>
+                  {/* @ts-ignore */}
+                  {proj.isPrivate ? (
+                    <div className="flex items-center gap-1 px-3 py-1.5 bg-slate-100 text-slate-500 font-mono text-xs rounded-full border-2 border-slate-300 cursor-not-allowed opacity-80">
+                      <Lock size={14} />
+                      Private
+                    </div>
+                  ) : (
+                    proj.link && (
+                      <a
+                        href={proj.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center gap-1 px-3 py-1.5 bg-slate-900 text-white font-mono text-xs rounded-full border-2 border-black shadow-[2px_2px_0px_#000] hover:bg-slate-700 hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_#000] transition-all"
+                      >
+                        <Github size={14} />
+                        Code
+                      </a>
+                    )
+                  )}
+                </div>
+              </DoodleCard>
+            </FadeInOnScroll>
           ))}
         </div>
       </section>

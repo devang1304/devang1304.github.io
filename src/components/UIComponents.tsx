@@ -11,6 +11,7 @@ import {
   Palmtree,
   Trophy,
   Music,
+  X,
 } from "lucide-react";
 
 export const DoodleCard = ({
@@ -25,7 +26,7 @@ export const DoodleCard = ({
   bgColor?: string;
 }) => (
   <div
-    className={`${bgColor} p-6 relative shadow-[5px_5px_0px_#2d2d2d] transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-[8px_8px_0px_#2d2d2d] active:scale-[1.01] active:translate-y-0.5 active:shadow-[4px_4px_0px_#2d2d2d] ${className}`}
+    className={`${bgColor} p-5 relative shadow-[5px_5px_0px_#2d2d2d] transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-[8px_8px_0px_#2d2d2d] active:scale-[1.01] active:translate-y-0.5 active:shadow-[4px_4px_0px_#2d2d2d] ${className}`}
     style={{
       borderRadius: "30px 225px 15px 255px / 255px 15px 225px 20px",
       border: "4px solid #2d2d2d",
@@ -72,33 +73,41 @@ export const HandButton = ({
   href?: string;
   download?: boolean;
 }) => {
-  const Component = href ? "a" : "button";
   const primaryClasses =
     "bg-[#3b82f6] text-white shadow-[4px_4px_0px_#2d2d2d] hover:shadow-[6px_6px_0px_#2d2d2d] active:shadow-[2px_2px_0px_#2d2d2d]";
   const secondaryClasses =
     "bg-white text-slate-800 shadow-[4px_4px_0px_#cbd5e1] hover:shadow-[6px_6px_0px_#cbd5e1] active:shadow-[2px_2px_0px_#cbd5e1]";
 
-  return (
-    // @ts-ignore
-    <Component
-      href={href}
-      download={download}
-      onClick={onClick}
-      target={
-        href?.startsWith("http") || href?.startsWith("#") ? undefined : "_blank"
-      }
-      rel={href?.startsWith("http") ? "noreferrer" : undefined}
-      className={`px-6 py-3 font-bold text-lg transition-all duration-150 ease-out flex items-center gap-2 justify-center
+  const commonStyles = {
+    border: "3px solid #2d2d2d",
+    borderRadius: "255px 15px 225px 15px / 15px 225px 15px 255px",
+    textDecoration: "none",
+  };
+
+  const commonClassName = `px-6 py-3 font-bold text-lg transition-all duration-150 ease-out flex items-center gap-2 justify-center
       hover:-translate-y-0.5 active:translate-y-0.5
-      ${primary ? primaryClasses : secondaryClasses}`}
-      style={{
-        border: "3px solid #2d2d2d",
-        borderRadius: "255px 15px 225px 15px / 15px 225px 15px 255px",
-        textDecoration: "none",
-      }}
-    >
+      ${primary ? primaryClasses : secondaryClasses}`;
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        download={download}
+        onClick={onClick}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel={href.startsWith("http") ? "noreferrer" : undefined}
+        className={commonClassName}
+        style={commonStyles}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <button onClick={onClick} className={commonClassName} style={commonStyles}>
       {children}
-    </Component>
+    </button>
   );
 };
 
@@ -189,6 +198,7 @@ export const TimelineCard = ({
 }) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const cardRef = React.useRef<HTMLDivElement>(null);
 
   const title =
     type === "experience"
@@ -208,20 +218,47 @@ export const TimelineCard = ({
 
   const hasExpandableContent = item.note || item.media;
 
-  // Handle click for mobile, hover for desktop
-  const handleClick = () => {
-    if (!isDesktop && hasExpandableContent) {
+  // Click to toggle for both mobile and desktop
+  const handleCardClick = () => {
+    if (hasExpandableContent) {
       setIsExpanded(!isExpanded);
     }
   };
 
-  const handleMouseEnter = () => {
-    if (isDesktop) setIsExpanded(true);
-  };
+  // Close popup when clicking outside
+  React.useEffect(() => {
+    if (!isExpanded || !isDesktop) return;
 
-  const handleMouseLeave = () => {
-    if (isDesktop) setIsExpanded(false);
-  };
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        setIsExpanded(false);
+      }
+    };
+
+    // Add slight delay to prevent immediate close
+    const timer = setTimeout(() => {
+      document.addEventListener("click", handleClickOutside);
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isExpanded, isDesktop]);
+
+  // Escape key to close
+  React.useEffect(() => {
+    if (!isExpanded) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsExpanded(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isExpanded]);
 
   return (
     <div
@@ -249,11 +286,7 @@ export const TimelineCard = ({
       />
 
       {/* Card Container */}
-      <div
-        className="w-full md:w-[600px] pl-6 md:pl-0 relative"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      <div ref={cardRef} className="w-full md:w-[600px] pl-6 md:pl-0 relative">
         {/* Base Card - On mobile shows inline expansion, on desktop fades out for popup */}
         <DoodleCard
           rotate={idx % 2 === 0 ? "0.5deg" : "-0.5deg"}
@@ -264,32 +297,28 @@ export const TimelineCard = ({
               : "opacity-100"
           }`}
         >
-          <div className="flex flex-col gap-4" onClick={handleClick}>
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
-              <div className="flex-1 min-w-0">
-                <h3 className="text-xl font-hand font-bold text-slate-900 leading-tight md:whitespace-nowrap">
-                  {title}
-                </h3>
-                <p className="text-slate-600 font-mono text-xs mt-1">
-                  {subtitle}
-                  {item.location && ` • ${item.location}`}
-                </p>
-              </div>
-              <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 shrink-0">
-                <span className="px-2 py-0.5 bg-yellow-100 border border-black rounded-full font-mono text-[10px] font-bold whitespace-nowrap shadow-[2px_2px_0px_#2d2d2d]">
-                  {period}
+          <div className="flex flex-col gap-2" onClick={handleCardClick}>
+            {/* Title only in collapsed view */}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-xl font-hand font-bold text-slate-900 leading-tight">
+                {title}
+              </h3>
+            </div>
+            {/* Date and Expand Row */}
+            <div className="flex items-center justify-between">
+              <span className="px-2 py-0.5 bg-yellow-100 border border-black rounded-full font-mono text-[10px] font-bold whitespace-nowrap shadow-[2px_2px_0px_#2d2d2d]">
+                {period}
+              </span>
+              {hasExpandableContent && (
+                <span
+                  className={`flex items-center justify-center w-8 h-8 text-sm text-slate-400 transition-transform duration-300 ${
+                    !isDesktop && isExpanded ? "rotate-180" : ""
+                  }`}
+                  aria-label={isExpanded ? "Collapse" : "Expand"}
+                >
+                  ▼
                 </span>
-                {hasExpandableContent && (
-                  <span
-                    className={`text-xs text-slate-400 transition-transform duration-300 ${
-                      !isDesktop && isExpanded ? "rotate-180" : ""
-                    }`}
-                  >
-                    ▼
-                  </span>
-                )}
-              </div>
+              )}
             </div>
 
             {/* Mobile Inline Expansion */}
@@ -302,6 +331,11 @@ export const TimelineCard = ({
                 }`}
               >
                 <div className="border-t-2 border-dashed border-slate-300 pt-3">
+                  {/* Subtitle and Location */}
+                  <p className="text-slate-600 font-mono text-xs mb-2">
+                    {subtitle}
+                    {item.location && ` • ${item.location}`}
+                  </p>
                   {/* Category Icon for Personal */}
                   {type === "personal" && (
                     <div className="flex items-center gap-2 text-slate-500 font-mono text-xs mb-2">
@@ -388,6 +422,18 @@ export const TimelineCard = ({
                 border: "4px solid #2d2d2d",
               }}
             >
+              {/* Close Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsExpanded(false);
+                }}
+                className="absolute top-3 right-3 p-1.5 bg-slate-100 hover:bg-slate-200 rounded-full border-2 border-black shadow-[2px_2px_0px_#2d2d2d] hover:shadow-[3px_3px_0px_#2d2d2d] active:shadow-[1px_1px_0px_#2d2d2d] active:translate-y-0.5 transition-all z-10"
+                aria-label="Close"
+              >
+                <X size={16} />
+              </button>
+
               <div
                 className={`flex ${item.media ? "flex-row" : "flex-col"} gap-4`}
               >
