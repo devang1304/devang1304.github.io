@@ -4,24 +4,16 @@ export const experienceData = [
     company: "Rochester Institute of Technology",
     period: "Oct 2024 -- Dec 2025",
     location: "Rochester, NY",
-    details: [
-      "Developed a novel explainability framework for Temporal Graph Neural Networks (TGNNs) using DARPA TC datasets (CADETS, THEIA, TRACE), improving transparency in cybersecurity alert systems.",
-      "Implemented and benchmarked multiple explainability methods: GNNExplainer, GraphMask, and VA-TGExplainer (novel method with uncertainty quantification).",
-      "Built interactive Streamlit dashboards for SOC analysts with real-time predictions, attribution maps, and LLM-generated narrative reports.",
-      "Co-authored 4 publications on XAI in threat intelligence and provenance-based IDS.",
-    ],
+    note: "Teaching AI to explain itself so we can trust it. (No, it hasn't become sentient... yet.)",
+    details: [],
   },
   {
     role: "Senior Engineer — Cloud Infrastructure & Security",
     company: "Netwoven Inc.",
     period: "Aug 2020 -- Jun 2023",
     location: "Kolkata, India",
-    details: [
-      "Led Microsoft 365 tenant migrations for 5,000+ users with 99.9% uptime, implementing enterprise security controls (MIP, DLP, Intune, Conditional Access).",
-      "Achieved 20-30% reduction in cloud spend through Azure cost optimization, governance frameworks, and resource tagging.",
-      "Developed automation frameworks using PowerShell and Power Automate, reducing manual operations by 40%.",
-      "Served as technical analyst for Govern365 data governance platform, conducting PoCs and client training.",
-    ],
+    note: "Herding clouds and securing perimeters. Made sure 5,000+ users didn't accidentally leak data.",
+    details: [],
   },
 ];
 
@@ -31,12 +23,14 @@ export const educationData = [
     school: "Rochester Institute of Technology",
     period: "Aug 2023 -- Dec 2025",
     location: "Rochester, NY",
+    note: "Mastering the art of torturing data until it confesses.",
   },
   {
     degree: "Bachelor of Computer Applications",
     school: "Amity University",
     period: "Jul 2017 -- Jun 2020",
     location: "Noida, India",
+    note: "Where the coding journey began. Fueled by caffeine and curiosity.",
   },
 ];
 
@@ -119,4 +113,49 @@ export const importantSkills = [
   "Azure",
   "SQL",
   "FastAPI",
+];
+
+export const personalData = [
+  {
+    title: "RedBull F1 Factory Tour & Formula 4 Drive",
+    category: "Motorsports",
+    date: "Sep 2025",
+    location: "Milton Keynes & Silverstone, UK",
+    note: "Toured the RB factory and drove a Formula 4 car at the home of British Motor Racing.",
+  },
+  {
+    title: "Coldplay: Music of the Spheres",
+    category: "Concert",
+    date: "Aug 2025",
+    location: "Wembley Stadium, London",
+    note: "A stadium full of 100,000 stars! Experiencing the magic of Coldplay live at Wembley.",
+  },
+  {
+    title: "Tulum Beach Getaway",
+    category: "Travel",
+    date: "Dec 2024",
+    location: "Tulum, Mexico",
+    note: "Sipping piña coladas by the caribbean sea. The ultimate recharge.",
+  },
+  {
+    title: "Pacific Highway 101 Road Trip",
+    category: "Road Trip",
+    date: "Summer 2024",
+    location: "Portland to San Francisco",
+    note: "Driving down the coast, chasing the perfect sunset. Spoiler: It does exist!",
+  },
+  {
+    title: "Trekking Hang Son Doong Cave",
+    category: "Adventure",
+    date: "Jul 2023",
+    location: "Quang Binh, Vietnam",
+    note: "Expedition into the world's largest cave. Jungle trekking, river crossings, and camping underground.",
+  },
+  {
+    title: "Abu Dhabi Grand Prix 2021",
+    category: "Event",
+    date: "Dec 2021",
+    location: "Yas Marina Circuit, UAE",
+    note: "A world-class showdown. Lewis's 8th championship... or Max's first? History witnessed.",
+  },
 ];

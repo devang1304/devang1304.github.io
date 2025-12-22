@@ -1,17 +1,31 @@
 import React from "react";
-import { Briefcase, GraduationCap, User } from "lucide-react";
+import {
+  Briefcase,
+  GraduationCap,
+  User,
+  Ticket,
+  Plane,
+  Heart,
+  Car,
+  Mountain,
+  Palmtree,
+  Trophy,
+  Music,
+} from "lucide-react";
 
 export const DoodleCard = ({
   children,
   className = "",
   rotate = "0deg",
+  bgColor = "bg-white",
 }: {
   children: React.ReactNode;
   className?: string;
   rotate?: string;
+  bgColor?: string;
 }) => (
   <div
-    className={`bg-white p-6 relative shadow-[5px_5px_0px_#2d2d2d] transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-[8px_8px_0px_#2d2d2d] active:scale-[1.01] active:translate-y-0.5 active:shadow-[4px_4px_0px_#2d2d2d] ${className}`}
+    className={`${bgColor} p-6 relative shadow-[5px_5px_0px_#2d2d2d] transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-[8px_8px_0px_#2d2d2d] active:scale-[1.01] active:translate-y-0.5 active:shadow-[4px_4px_0px_#2d2d2d] ${className}`}
     style={{
       borderRadius: "30px 225px 15px 255px / 255px 15px 225px 20px",
       border: "4px solid #2d2d2d",
@@ -146,53 +160,78 @@ export const TimelineCard = ({
   item,
   type,
   idx,
+  color = "bg-white",
 }: {
   item: any;
-  type: "experience" | "education";
+  type: "experience" | "education" | "personal";
   idx: number;
+  color?: string;
 }) => (
   <div className="relative md:pl-12">
-    <div className="absolute left-4 -translate-x-1/2 top-8 w-5 h-5 bg-blue-500 rounded-full border-2 border-black hidden md:block z-10"></div>
-    <DoodleCard rotate={idx % 2 === 0 ? "1deg" : "-1deg"}>
+    <div
+      className={`absolute left-4 -translate-x-1/2 top-8 w-5 h-5 rounded-full border-2 border-black hidden md:block z-10 ${
+        type === "personal" ? "bg-pink-400" : "bg-blue-500"
+      }`}
+    ></div>
+    <DoodleCard rotate={idx % 2 === 0 ? "1deg" : "-1deg"} bgColor={color}>
       <div
         className={`flex flex-col md:flex-row justify-between pb-4 ${
-          type === "experience"
+          item.note || item.details
             ? "mb-4 border-b-2 border-dashed border-slate-200"
             : ""
         }`}
       >
         <div>
           <h3 className="text-2xl font-hand font-bold text-slate-900">
-            {type === "experience" ? item.role : item.degree}
+            {type === "experience"
+              ? item.role
+              : type === "education"
+              ? item.degree
+              : item.title}
           </h3>
           <div className="flex items-center gap-2 text-slate-600 font-mono text-sm mt-1">
             {type === "experience" ? (
               <Briefcase size={16} />
-            ) : (
+            ) : type === "education" ? (
               <GraduationCap size={16} />
+            ) : item.category === "Motorsports" ||
+              item.category === "Road Trip" ? (
+              <Car size={16} />
+            ) : item.category === "Adventure" ? (
+              <Mountain size={16} />
+            ) : item.category === "Travel" ? (
+              <Palmtree size={16} />
+            ) : item.category === "Concert" ? (
+              <Music size={16} />
+            ) : item.category === "Event" ? (
+              <Trophy size={16} />
+            ) : (
+              <Heart size={16} />
             )}
-            {type === "experience" ? item.company : item.school}
-            <span className="hidden md:inline">|</span>
-            <span className="flex items-center gap-1">
-              <User size={14} /> {item.location}
-            </span>
+            {type === "experience"
+              ? item.company
+              : type === "education"
+              ? item.school
+              : item.category}
+            {type !== "education" && (
+              <>
+                <span className="hidden md:inline">|</span>
+                <span className="flex items-center gap-1">
+                  <User size={14} /> {item.location}
+                </span>
+              </>
+            )}
           </div>
         </div>
         <div className="mt-2 md:mt-0 px-3 py-1 bg-yellow-100 border-2 border-black rounded-full self-start font-mono text-xs font-bold whitespace-nowrap">
-          {item.period}
+          {type === "personal" ? item.date : item.period}
         </div>
       </div>
-      {type === "experience" && item.details && (
-        <ul className="space-y-2">
-          {item.details.map((detail: string, i: number) => (
-            <li
-              key={i}
-              className="flex items-start gap-2 font-hand text-lg text-slate-700"
-            >
-              <span className="text-blue-500 mt-1">➜</span> {detail}
-            </li>
-          ))}
-        </ul>
+      {/* Fun Note for all types - Character everywhere! */}
+      {item.note && (
+        <p className="font-hand text-lg text-slate-700 italic mt-2">
+          "{item.note}"
+        </p>
       )}
     </DoodleCard>
   </div>
