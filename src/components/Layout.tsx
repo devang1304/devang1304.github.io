@@ -99,12 +99,49 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="max-w-6xl mx-auto bg-white/90 backdrop-blur-sm border-2 border-black rounded-full px-6 py-3 flex justify-between items-center shadow-[4px_4px_0px_rgba(0,0,0,0.1)]">
           <Link
             to="/"
+            onClick={(e) => {
+              if (location.pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
             className="font-hand text-2xl font-bold flex items-center gap-1.5"
           >
             <span className="text-blue-500">&lt;/&gt;</span>
             <span>@devang1304</span>
           </Link>
           <div className="hidden md:flex gap-6 font-hand text-lg">
+            <Link
+              to="/"
+              onClick={(e) => {
+                if (location.pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className={`hover:text-blue-600 transition-colors ${
+                location.pathname === "/" && !location.hash
+                  ? "text-blue-600 underline decoration-wavy"
+                  : ""
+              }`}
+            >
+              Home
+            </Link>
+            {location.pathname === "/" ? (
+              <button
+                onClick={() => scrollToSection("papers")}
+                className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer"
+              >
+                Publications
+              </button>
+            ) : (
+              <Link
+                to="/#papers"
+                className="hover:text-blue-600 transition-colors"
+              >
+                Publications
+              </Link>
+            )}
             <Link
               to="/experience"
               className={`hover:text-blue-600 transition-colors ${
@@ -113,39 +150,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   : ""
               }`}
             >
-              Experience
+              Experiences
             </Link>
-            {location.pathname === "/" ? (
-              <>
-                <button
-                  onClick={() => scrollToSection("projects")}
-                  className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer"
-                >
-                  Projects
-                </button>
-                <button
-                  onClick={() => scrollToSection("papers")}
-                  className="hover:text-blue-600 transition-colors bg-transparent border-none cursor-pointer"
-                >
-                  Papers
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/#projects" // Simple link for now, could be improved with hash routing logic
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Projects
-                </Link>
-                <Link
-                  to="/#papers"
-                  className="hover:text-blue-600 transition-colors"
-                >
-                  Papers
-                </Link>
-              </>
-            )}
           </div>
         </div>
       </nav>

@@ -122,6 +122,10 @@ export const personalData = [
     date: "Sep 2025",
     location: "Milton Keynes & Silverstone, UK",
     note: "Toured the RB factory and drove a Formula 4 car at the home of British Motor Racing.",
+    media: {
+      type: "image",
+      src: "/factory.jpeg",
+    },
   },
   {
     title: "Coldplay: Music of the Spheres",
@@ -129,6 +133,10 @@ export const personalData = [
     date: "Aug 2025",
     location: "Wembley Stadium, London",
     note: "A stadium full of 100,000 stars! Experiencing the magic of Coldplay live at Wembley.",
+    media: {
+      type: "image",
+      src: "/concert.jpeg",
+    },
   },
   {
     title: "Tulum Beach Getaway",
@@ -136,6 +144,10 @@ export const personalData = [
     date: "Dec 2024",
     location: "Tulum, Mexico",
     note: "Sipping piña coladas by the caribbean sea. The ultimate recharge.",
+    media: {
+      type: "image",
+      src: "/mexico.jpeg",
+    },
   },
   {
     title: "Pacific Highway 101 Road Trip",
@@ -143,6 +155,10 @@ export const personalData = [
     date: "Summer 2024",
     location: "Portland to San Francisco",
     note: "Driving down the coast, chasing the perfect sunset. Spoiler: It does exist!",
+    media: {
+      type: "image",
+      src: "/bridge.jpeg",
+    },
   },
   {
     title: "Trekking Hang Son Doong Cave",
@@ -150,6 +166,10 @@ export const personalData = [
     date: "Jul 2023",
     location: "Quang Binh, Vietnam",
     note: "Expedition into the world's largest cave. Jungle trekking, river crossings, and camping underground.",
+    media: {
+      type: "image",
+      src: "/cave.jpeg",
+    },
   },
   {
     title: "Abu Dhabi Grand Prix 2021",
@@ -157,5 +177,9 @@ export const personalData = [
     date: "Dec 2021",
     location: "Yas Marina Circuit, UAE",
     note: "A world-class showdown. Lewis's 8th championship... or Max's first? History witnessed.",
+    media: {
+      type: "image",
+      src: "/f1.jpeg",
+    },
   },
 ];

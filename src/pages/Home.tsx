@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Download,
   Github,
@@ -24,7 +25,33 @@ import {
 } from "../data/content";
 
 export default function Home() {
-  const publicationColors = ["bg-yellow-100", "bg-blue-100", "bg-green-100"];
+  const location = useLocation();
+
+  // Handle navigation: scroll to top or hash section
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace("#", "");
+      const element = document.getElementById(id);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [location]);
+
+  const publicationColors = [
+    "bg-yellow-100",
+    "bg-blue-100",
+    "bg-green-100",
+    "bg-pink-100",
+    "bg-purple-100",
+    "bg-orange-100",
+    "bg-rose-100",
+    "bg-cyan-100",
+  ];
 
   return (
     <>
@@ -115,6 +142,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* --- ABOUT ME SECTION --- */}
+      <section id="about-me" className="mb-16">
+        <div className="max-w-5xl space-y-4 font-hand text-xl text-slate-700 leading-relaxed">
+          <p>
+            I'm a{" "}
+            <span className="font-bold text-blue-600">
+              Data Science & AI professional
+            </span>{" "}
+            with a Master's from{" "}
+            <span className="font-bold">Rochester Institute of Technology</span>
+            . My work sits at the intersection of{" "}
+            <span className="underline decoration-yellow-300 decoration-4">
+              machine-learning
+            </span>
+            ,{" "}
+            <span className="underline decoration-green-300 decoration-4">
+              cloud infrastructure
+            </span>
+            , and{" "}
+            <span className="underline decoration-pink-300 decoration-4">
+              cybersecurity
+            </span>{" "}
+            — building intelligent systems that solve real problems.
+          </p>
+
+          <p>
+            Before grad school, I spent three years at{" "}
+            <span className="font-bold">Netwoven</span> as a Cloud Engineer,
+            delivering Azure-based infrastructure and security solutions across
+            multiple industries. My work there earned me the{" "}
+            <span className="italic">Spot Award</span> and{" "}
+            <span className="italic">Role Model Award</span> for performance and
+            impact.
+          </p>
+
+          <p>
+            Most recently, I researched{" "}
+            <span className="font-bold text-purple-600">
+              Explainable AI for Intrusion Detection Systems
+            </span>{" "}
+            — teaching AI to explain itself so security analysts can actually
+            trust its decisions. Now, I'm looking for opportunities in{" "}
+            <span className="font-bold text-blue-600">AI & MLOps</span> where I
+            can build and deploy intelligent systems at scale.
+          </p>
+        </div>
+      </section>
+
       {/* --- SKILLS SUBSECTION --- */}
       <section id="skills" className="mb-32 text-center">
         <div className="flex flex-wrap justify-center items-center gap-4 max-w-4xl mx-auto">
@@ -183,7 +258,7 @@ export default function Home() {
       </section>
 
       {/* --- PUBLICATIONS SECTION --- */}
-      <section id="papers" className="mb-32">
+      <section id="papers" className="mb-32 scroll-mt-32">
         <SectionTitle
           title="Publications"
           icon={BookOpen}

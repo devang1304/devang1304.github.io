@@ -1,5 +1,5 @@
-import React from "react";
-import { Briefcase, Sparkles } from "lucide-react";
+import React, { useEffect } from "react";
+import { Briefcase } from "lucide-react";
 import {
   SectionTitle,
   YearMarker,
@@ -8,14 +8,17 @@ import {
 import { experienceData, educationData, personalData } from "../data/content";
 
 export default function Experience() {
-  // Combine and sort data
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
+  // Combine and sort data chronologically (newest first)
   const combinedData = [
-    ...experienceData.map((d) => ({ ...d, type: "experience" })),
-    ...educationData.map((d) => ({ ...d, type: "education" })),
-    ...personalData.map((d) => ({ ...d, type: "personal" })),
+    ...experienceData.map((d) => ({ ...d, type: "experience" as const })),
+    ...educationData.map((d) => ({ ...d, type: "education" as const })),
+    ...personalData.map((d) => ({ ...d, type: "personal" as const })),
   ].sort((a, b) => {
     const getDate = (item: any) => {
-      // Handle range "Oct 2024 -- Dec 2025" or single "Sep 2024"
       const dateStr = (item.period || item.date).split("--")[0].trim();
       const [month, year] = dateStr.split(" ");
       const monthIdx = [
@@ -44,6 +47,8 @@ export default function Experience() {
     "bg-pink-100",
     "bg-purple-100",
     "bg-orange-100",
+    "bg-rose-100",
+    "bg-cyan-100",
   ];
 
   const getItemYear = (item: any) => {
@@ -53,35 +58,57 @@ export default function Experience() {
   };
 
   return (
-    <section id="experience" className="mb-32">
+    <section id="experience" className="min-h-screen w-full py-12 px-4 md:px-8">
       <SectionTitle
         title="Experience & Adventures"
         icon={Briefcase}
+        className="mb-12"
         onClick={undefined}
       />
 
-      <div className="relative">
-        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-300 hidden md:block border-l-2 border-dashed border-slate-400 -z-10"></div>
-        <div className="space-y-8">
+      {/* Vertical Timeline Container */}
+      <div className="relative max-w-7xl mx-auto">
+        {/* Central Timeline Spine */}
+        <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-slate-300 via-slate-400 to-slate-300 md:-translate-x-1/2" />
+
+        {/* Timeline Items */}
+        <div className="flex flex-col -space-y-12 md:-space-y-12">
           {combinedData.map((item: any, idx) => {
             const year = getItemYear(item);
             const prevYear = getItemYear(combinedData[idx - 1]);
+            const side = idx % 2 === 0 ? "left" : "right";
 
             return (
               <React.Fragment key={idx}>
+                {/* Year Marker */}
                 {(!prevYear || year !== prevYear) && (
-                  <YearMarker year={parseInt(year)} />
+                  <div className="relative flex items-center justify-center py-2">
+                    <div className="absolute left-0 md:left-1/2 w-0.5 h-full bg-slate-300 md:-translate-x-1/2" />
+                    <div className="relative z-10 bg-white px-4 py-2 border-2 border-black rounded-full shadow-[3px_3px_0px_#2d2d2d] font-mono text-sm font-bold">
+                      {year}
+                    </div>
+                  </div>
                 )}
-                {/* @ts-ignore */}
+
+                {/* Timeline Card */}
                 <TimelineCard
                   item={item}
                   type={item.type}
                   idx={idx}
                   color={colors[idx % colors.length]}
+                  side={side}
                 />
               </React.Fragment>
             );
           })}
+        </div>
+
+        {/* End Marker */}
+        <div className="relative flex items-center justify-center py-4">
+          <div className="absolute left-0 md:left-1/2 top-0 h-1/2 w-0.5 bg-slate-300 md:-translate-x-1/2" />
+          <div className="relative z-10 bg-slate-800 text-white px-4 py-2 rounded-full font-mono text-xs font-bold shadow-[3px_3px_0px_#2d2d2d]">
+            The Journey Continues...
+          </div>
         </div>
       </div>
     </section>

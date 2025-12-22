@@ -147,95 +147,328 @@ export const SkillTag = ({
 );
 
 export const YearMarker = ({ year }: { year: number }) => (
-  <div className="relative h-8 flex items-center">
-    <div className="absolute left-4 -translate-x-1/2">
-      <span className="bg-[#f8f5f2] px-2 font-hand text-2xl font-bold text-slate-400">
-        {year}
-      </span>
-    </div>
+  <div className="relative flex flex-col items-center justify-center -ml-16 mr-8 z-0">
+    <div className="w-0.5 h-6 bg-slate-400 mb-2"></div>
+    <span className="font-mono text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded border border-slate-300">
+      {year}
+    </span>
   </div>
 );
+
+// Custom hook for responsive behavior
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = React.useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia(query).matches;
+    }
+    return false;
+  });
+
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, [query]);
+
+  return matches;
+};
 
 export const TimelineCard = ({
   item,
   type,
   idx,
   color = "bg-white",
+  side = "left",
 }: {
   item: any;
   type: "experience" | "education" | "personal";
   idx: number;
   color?: string;
-}) => (
-  <div className="relative md:pl-12">
+  side?: "left" | "right";
+}) => {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
+  const title =
+    type === "experience"
+      ? item.role
+      : type === "education"
+      ? item.degree
+      : item.title;
+
+  const subtitle =
+    type === "experience"
+      ? item.company
+      : type === "education"
+      ? item.school
+      : item.category;
+
+  const period = type === "personal" ? item.date : item.period;
+
+  const hasExpandableContent = item.note || item.media;
+
+  // Handle click for mobile, hover for desktop
+  const handleClick = () => {
+    if (!isDesktop && hasExpandableContent) {
+      setIsExpanded(!isExpanded);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (isDesktop) setIsExpanded(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (isDesktop) setIsExpanded(false);
+  };
+
+  return (
     <div
-      className={`absolute left-4 -translate-x-1/2 top-8 w-5 h-5 rounded-full border-2 border-black hidden md:block z-10 ${
-        type === "personal" ? "bg-pink-400" : "bg-blue-500"
+      className={`relative flex items-center w-full md:w-1/2 ${
+        side === "left" ? "md:pr-12 md:justify-end" : "md:pl-12 md:ml-auto"
       }`}
-    ></div>
-    <DoodleCard rotate={idx % 2 === 0 ? "1deg" : "-1deg"} bgColor={color}>
+    >
+      {/* Timeline Dot */}
       <div
-        className={`flex flex-col md:flex-row justify-between pb-4 ${
-          item.note || item.details
-            ? "mb-4 border-b-2 border-dashed border-slate-200"
-            : ""
-        }`}
+        className={`absolute hidden md:block w-4 h-4 rounded-full border-2 border-black z-20
+          ${type === "personal" ? "bg-pink-400" : "bg-blue-500"}
+          ${
+            side === "left"
+              ? "right-0 translate-x-1/2"
+              : "left-0 -translate-x-1/2"
+          }
+        `}
+      />
+
+      {/* Mobile Dot */}
+      <div
+        className={`absolute md:hidden left-0 w-4 h-4 rounded-full border-2 border-black z-20 -translate-x-1/2
+          ${type === "personal" ? "bg-pink-400" : "bg-blue-500"}
+        `}
+      />
+
+      {/* Card Container */}
+      <div
+        className="w-full md:w-[600px] pl-6 md:pl-0 relative"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <div>
-          <h3 className="text-2xl font-hand font-bold text-slate-900">
-            {type === "experience"
-              ? item.role
-              : type === "education"
-              ? item.degree
-              : item.title}
-          </h3>
-          <div className="flex items-center gap-2 text-slate-600 font-mono text-sm mt-1">
-            {type === "experience" ? (
-              <Briefcase size={16} />
-            ) : type === "education" ? (
-              <GraduationCap size={16} />
-            ) : item.category === "Motorsports" ||
-              item.category === "Road Trip" ? (
-              <Car size={16} />
-            ) : item.category === "Adventure" ? (
-              <Mountain size={16} />
-            ) : item.category === "Travel" ? (
-              <Palmtree size={16} />
-            ) : item.category === "Concert" ? (
-              <Music size={16} />
-            ) : item.category === "Event" ? (
-              <Trophy size={16} />
-            ) : (
-              <Heart size={16} />
-            )}
-            {type === "experience"
-              ? item.company
-              : type === "education"
-              ? item.school
-              : item.category}
-            {type !== "education" && (
-              <>
-                <span className="hidden md:inline">|</span>
-                <span className="flex items-center gap-1">
-                  <User size={14} /> {item.location}
+        {/* Base Card - On mobile shows inline expansion, on desktop fades out for popup */}
+        <DoodleCard
+          rotate={idx % 2 === 0 ? "0.5deg" : "-0.5deg"}
+          bgColor={color}
+          className={`cursor-pointer transition-all duration-300 ease-out relative ${
+            isDesktop && isExpanded && hasExpandableContent
+              ? "opacity-0"
+              : "opacity-100"
+          }`}
+        >
+          <div className="flex flex-col gap-4" onClick={handleClick}>
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-3">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-xl font-hand font-bold text-slate-900 leading-tight md:whitespace-nowrap">
+                  {title}
+                </h3>
+                <p className="text-slate-600 font-mono text-xs mt-1">
+                  {subtitle}
+                  {item.location && ` • ${item.location}`}
+                </p>
+              </div>
+              <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 shrink-0">
+                <span className="px-2 py-0.5 bg-yellow-100 border border-black rounded-full font-mono text-[10px] font-bold whitespace-nowrap shadow-[2px_2px_0px_#2d2d2d]">
+                  {period}
                 </span>
-              </>
+                {hasExpandableContent && (
+                  <span
+                    className={`text-xs text-slate-400 transition-transform duration-300 ${
+                      !isDesktop && isExpanded ? "rotate-180" : ""
+                    }`}
+                  >
+                    ▼
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Mobile Inline Expansion */}
+            {!isDesktop && (
+              <div
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  isExpanded
+                    ? "max-h-[600px] opacity-100 mt-3"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="border-t-2 border-dashed border-slate-300 pt-3">
+                  {/* Category Icon for Personal */}
+                  {type === "personal" && (
+                    <div className="flex items-center gap-2 text-slate-500 font-mono text-xs mb-2">
+                      {item.category === "Motorsports" ||
+                      item.category === "Road Trip" ? (
+                        <Car size={14} />
+                      ) : item.category === "Adventure" ? (
+                        <Mountain size={14} />
+                      ) : item.category === "Travel" ? (
+                        <Palmtree size={14} />
+                      ) : item.category === "Concert" ? (
+                        <Music size={14} />
+                      ) : item.category === "Event" ? (
+                        <Trophy size={14} />
+                      ) : (
+                        <Heart size={14} />
+                      )}
+                      <span>{item.category}</span>
+                    </div>
+                  )}
+
+                  {/* Note */}
+                  {item.note && (
+                    <p className="font-hand text-base text-slate-700 italic">
+                      "{item.note}"
+                    </p>
+                  )}
+
+                  {/* Media */}
+                  {item.media && (
+                    <div className="mt-3 rounded-lg overflow-hidden border-2 border-black shadow-[3px_3px_0px_#2d2d2d] bg-black">
+                      {item.media.type === "video" ? (
+                        <video
+                          src={item.media.src}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="w-full object-cover"
+                        />
+                      ) : (
+                        <img
+                          src={item.media.src}
+                          alt="Memory"
+                          className="w-full object-cover"
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
             )}
           </div>
-        </div>
-        <div className="mt-2 md:mt-0 px-3 py-1 bg-yellow-100 border-2 border-black rounded-full self-start font-mono text-xs font-bold whitespace-nowrap">
-          {type === "personal" ? item.date : item.period}
-        </div>
+        </DoodleCard>
+
+        {/* Desktop Popup Card - Absolute positioned, expands over timeline */}
+        {isDesktop && (
+          <div
+            className={`absolute top-1/2 z-50 transition-all duration-300 ease-out origin-center pointer-events-none
+              ${
+                side === "left"
+                  ? "right-0 md:right-auto md:left-1/2"
+                  : "left-0 md:left-auto md:right-1/2"
+              }
+              ${
+                isExpanded && hasExpandableContent
+                  ? "opacity-100 scale-100 pointer-events-auto -translate-y-1/2"
+                  : "opacity-0 scale-95 -translate-y-1/2"
+              }`}
+            style={{
+              width: item.media ? "min(900px, 90vw)" : "min(600px, 90vw)",
+              transform:
+                isExpanded && hasExpandableContent
+                  ? `translateY(-50%) translateX(${
+                      side === "left" ? "-30%" : "30%"
+                    })`
+                  : "translateY(-50%) scale(0.95)",
+            }}
+          >
+            <div
+              className={`${color} p-6 relative shadow-[8px_8px_0px_#2d2d2d]`}
+              style={{
+                borderRadius: "30px 225px 15px 255px / 255px 15px 225px 20px",
+                border: "4px solid #2d2d2d",
+              }}
+            >
+              <div
+                className={`flex ${item.media ? "flex-row" : "flex-col"} gap-4`}
+              >
+                {/* Left Side - Content */}
+                <div className={`flex-1 ${item.media ? "w-1/2" : "w-full"}`}>
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-3">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-hand font-bold text-slate-900 leading-tight">
+                        {title}
+                      </h3>
+                      <p className="text-slate-600 font-mono text-xs mt-1">
+                        {subtitle}
+                        {item.location && ` • ${item.location}`}
+                      </p>
+                    </div>
+                    <span className="px-2 py-0.5 bg-yellow-100 border border-black rounded-full font-mono text-[10px] font-bold whitespace-nowrap shadow-[2px_2px_0px_#2d2d2d]">
+                      {period}
+                    </span>
+                  </div>
+
+                  {/* Category Icon for Personal */}
+                  {type === "personal" && (
+                    <div className="flex items-center gap-2 text-slate-500 font-mono text-xs mb-2">
+                      {item.category === "Motorsports" ||
+                      item.category === "Road Trip" ? (
+                        <Car size={14} />
+                      ) : item.category === "Adventure" ? (
+                        <Mountain size={14} />
+                      ) : item.category === "Travel" ? (
+                        <Palmtree size={14} />
+                      ) : item.category === "Concert" ? (
+                        <Music size={14} />
+                      ) : item.category === "Event" ? (
+                        <Trophy size={14} />
+                      ) : (
+                        <Heart size={14} />
+                      )}
+                      <span>{item.category}</span>
+                    </div>
+                  )}
+
+                  {/* Note */}
+                  {item.note && (
+                    <p className="font-hand text-base text-slate-700 italic border-t-2 border-dashed border-slate-300 pt-3">
+                      "{item.note}"
+                    </p>
+                  )}
+                </div>
+
+                {/* Right Side - Media */}
+                {item.media && (
+                  <div className="w-1/2 flex-shrink-0">
+                    <div className="rounded-lg overflow-hidden border-2 border-black shadow-[3px_3px_0px_#2d2d2d] bg-black h-full">
+                      {item.media.type === "video" ? (
+                        <video
+                          src={item.media.src}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          className="w-full h-full object-cover max-h-[300px]"
+                        />
+                      ) : (
+                        <img
+                          src={item.media.src}
+                          alt="Memory"
+                          className="w-full h-full object-cover max-h-[300px]"
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      {/* Fun Note for all types - Character everywhere! */}
-      {item.note && (
-        <p className="font-hand text-lg text-slate-700 italic mt-2">
-          "{item.note}"
-        </p>
-      )}
-    </DoodleCard>
-  </div>
-);
+    </div>
+  );
+};
 
 export const DoodleSticker = ({
   children,
