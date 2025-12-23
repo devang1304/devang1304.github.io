@@ -91,7 +91,7 @@ export const publicationsData = [
     title:
       "PROVEX: Enhancing SOC Analyst Trust with Explainable Provenance-Based IDS",
     authors: "Devang Dhanuka, Nidhi Rastogi",
-    link: "https://arxiv.org/submit/7083516/view",
+    link: "https://arxiv.org/abs/2512.18199",
     desc: "XAI framework for temporal graph-based IDS with 3-5s average explanation overhead per event.",
   },
 ];
