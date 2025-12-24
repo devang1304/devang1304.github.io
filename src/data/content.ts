@@ -1,12 +1,12 @@
 export const experienceData = [
-  {
-    role: "Making AI Explain Its Dark Secrets",
-    company: "Rochester Institute of Technology",
-    period: "Oct 2024 -- Dec 2025",
-    location: "Rochester, NY",
-    note: "Building PROVEX — an XAI framework that makes intrusion detection systems actually explain WHY they flagged something as suspicious. Because 'trust me bro' isn't a valid security protocol. Working with temporal graphs, GNNs, and occasionally questioning if the AI is smarter than me.",
-    details: [],
-  },
+  // {
+  //   role: "Making AI Explain Its Dark Secrets",
+  //   company: "Rochester Institute of Technology",
+  //   period: "Oct 2024 -- Dec 2025",
+  //   location: "Rochester, NY",
+  //   note: "Building PROVEX — an XAI framework that makes intrusion detection systems actually explain WHY they flagged something as suspicious. Because 'trust me bro' isn't a valid security protocol. Working with temporal graphs, GNNs, and occasionally questioning if the AI is smarter than me.",
+  //   details: [],
+  // },
   {
     role: "Cloud Whisperer & Security Guardian",
     company: "Netwoven Inc.",
@@ -138,28 +138,28 @@ export const personalData = [
       src: "/concert.jpeg",
     },
   },
-  {
-    title: "Caribbean Reset Button",
-    category: "Travel",
-    date: "Dec 2024",
-    location: "Tulum, Mexico",
-    note: "Escaped the Rochester winter for Tulum's turquoise waters. Days spent exploring cenotes and Mayan ruins, nights watching the sunset with a piña colada in hand. The ultimate year-end escape.",
-    media: {
-      type: "image",
-      src: "/mexico.jpeg",
-    },
-  },
-  {
-    title: "Chasing Pacific Sunsets",
-    category: "Road Trip",
-    date: "Summer 2024",
-    location: "Portland to San Francisco",
-    note: "1,000 miles down the Pacific Coast with the windows down and zero schedule. Oregon's rugged coastline, towering redwoods, and finally crossing the Golden Gate at sunset. Pure freedom on Highway 101.",
-    media: {
-      type: "image",
-      src: "/bridge.jpeg",
-    },
-  },
+  // {
+  //   title: "Caribbean Reset Button",
+  //   category: "Travel",
+  //   date: "Dec 2024",
+  //   location: "Tulum, Mexico",
+  //   note: "Escaped the Rochester winter for Tulum's turquoise waters. Days spent exploring cenotes and Mayan ruins, nights watching the sunset with a piña colada in hand. The ultimate year-end escape.",
+  //   media: {
+  //     type: "image",
+  //     src: "/mexico.jpeg",
+  //   },
+  // },
+  // {
+  //   title: "Chasing Pacific Sunsets",
+  //   category: "Road Trip",
+  //   date: "Summer 2024",
+  //   location: "Portland to San Francisco",
+  //   note: "1,000 miles down the Pacific Coast with the windows down and zero schedule. Oregon's rugged coastline, towering redwoods, and finally crossing the Golden Gate at sunset. Pure freedom on Highway 101.",
+  //   media: {
+  //     type: "image",
+  //     src: "/bridge.jpeg",
+  //   },
+  // },
   {
     title: "Into the World's Largest Cave",
     category: "Adventure",
