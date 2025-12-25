@@ -19,14 +19,14 @@ export const experienceData = [
 
 export const educationData = [
   {
-    degree: "MS in Data Science",
+    degree: "Mastering Build, Deploy, Scale!",
     school: "Rochester Institute of Technology",
     period: "Aug 2023 -- Dec 2025",
     location: "Rochester, NY",
     note: "Where I learned that 'data science' is 80% cleaning data and 20% convincing people that your model isn't just guessing. Currently surviving Rochester winters while building AI that explains itself. GPA: Caffeinated.",
   },
   {
-    degree: "BCA — The Origin Story",
+    degree: "Hello World!",
     school: "Amity University",
     period: "Jul 2017 -- Jun 2020",
     location: "Noida, India",
@@ -37,14 +37,14 @@ export const educationData = [
 export const projectsData = [
   {
     title: "PROVEX — Explainable Intrusion Detection",
-    tech: "PyTorch, PyG, Streamlit, LiteLLM, Vertex AI",
+    tech: "PyTorch, PyG, Streamlit",
     period: "Oct 2024 -- Dec 2025",
     link: "https://github.com/devang1304/provex",
     desc: "XAI framework for temporal graph-based IDS, adapting GNNExplainer, GraphMask, and VA-TGExplainer to provenance graphs with 3-5s explanation overhead per event.",
   },
   {
     title: "Threat Synthesis — Multi-LLM Security Benchmark",
-    tech: "LiteLLM, Vertex AI, Streamlit, Google Cloud",
+    tech: "LiteLLM, Vertex AI, Streamlit",
     period: "Sep 2025 -- Dec 2025",
     link: "https://github.com/devang1304/threat-synthesis",
     desc: "Built a comprehensive evaluation framework benchmarking LLMs (Gemini, GPT-4, Llama 3) on 8 cybersecurity tasks: MITRE ATT&CK mapping, IOC extraction, CVSS scoring, threat intel summarization.",
@@ -59,7 +59,7 @@ export const projectsData = [
   },
   {
     title: "Travel Itinerary Planner — Google ADK Agents",
-    tech: "Google ADK, Vertex AI, BigQuery, LangChain",
+    tech: "Google ADK, Vertex AI, BigQuery",
     period: "May 2025 -- Jun 2025",
     link: "https://github.com/devang1304/adk-travel-agent",
     desc: "Built intelligent multi-agent system with specialized agents for preference ingestion, attraction ranking, route optimization, and budget tracking using graph-based orchestration.",
@@ -135,7 +135,7 @@ export const personalData = [
     note: "Coldplay's Music of the Spheres tour at the legendary Wembley Stadium. When 'A Sky Full of Stars' played and 100,000 wristbands lit up in sync, I forgot how to breathe. Bucket list: checked.",
     media: {
       type: "image",
-      src: "/concert.jpeg",
+      src: "/coldplay.jpeg",
     },
   },
   // {
