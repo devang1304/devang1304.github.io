@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import {
   Download,
   Github,
@@ -10,6 +10,7 @@ import {
   BookOpen,
   ExternalLink,
   Lock,
+  ArrowRight,
 } from "lucide-react";
 import {
   HandButton,
@@ -192,7 +193,7 @@ export default function Home() {
       </section>
 
       {/* --- SKILLS SUBSECTION --- */}
-      <section id="skills" className="mb-32 text-center">
+      {/* <section id="skills" className="mb-32 text-center">
         <div className="flex flex-wrap justify-center items-center gap-4 max-w-4xl mx-auto">
           {importantSkills.map((skill, i) => (
             <SkillTag
@@ -203,7 +204,7 @@ export default function Home() {
             </SkillTag>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* --- PROJECTS SECTION --- */}
       <section id="projects" className="mb-32">
@@ -325,6 +326,47 @@ export default function Home() {
               </StickyNote>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* --- EXPERIENCE CTA SECTION --- */}
+      <section className="mb-16 text-center">
+        <div className="relative inline-block p-8 md:p-12 bg-gradient-to-br from-blue-50 to-purple-50 border-4 border-black rounded-2xl shadow-[8px_8px_0px_#000] transform hover:-translate-y-1 transition-transform duration-200">
+          <div className="absolute -top-4 -left-4 w-8 h-8 bg-yellow-300 border-2 border-black rounded-full" />
+          <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-pink-300 border-2 border-black rounded-full" />
+
+          <h2 className="text-3xl md:text-4xl font-hand font-bold mb-4">
+            Want to know{" "}
+            <span className="text-blue-600 relative inline-block">
+              my story
+              <svg
+                className="absolute w-full h-2 -bottom-1 left-0 text-yellow-300 z-[-1]"
+                viewBox="0 0 100 10"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M0 5 Q 50 10 100 5"
+                  stroke="currentColor"
+                  strokeWidth="8"
+                  fill="none"
+                />
+              </svg>
+            </span>
+            ?
+          </h2>
+          <p className="font-hand text-lg text-slate-600 mb-6 max-w-md mx-auto">
+            Explore my journey through work, education, and adventures!
+          </p>
+          <Link
+            to="/experience"
+            className="group inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white font-hand text-xl font-bold rounded-full border-3 border-black shadow-[4px_4px_0px_#000] hover:bg-blue-600 hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0px_#000] transition-all"
+          >
+            See My Journey
+            <ArrowRight
+              size={24}
+              className="group-hover:translate-x-1 transition-transform"
+            />
+          </Link>
         </div>
       </section>
     </>

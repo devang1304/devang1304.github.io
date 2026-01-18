@@ -36,6 +36,13 @@ export const educationData = [
 
 export const projectsData = [
   {
+    title: "Generative Transformer Model (nanoGPT)",
+    tech: "Python, PyTorch, CUDA, Transformer",
+    period: "Jul 2025 -- Jan 2026",
+    link: "https://github.com/devang1304/nanoGPT",
+    desc: "Built a decoder-only Transformer from scratch in PyTorch, implementing Multi-Head Self-Attention, LayerNorm, and Residual Connections to reproduce GPT-2. Implemented full pre-training loop on large-scale text data with AdamW optimization.",
+  },
+  {
     title: "PROVEX — Explainable Intrusion Detection",
     tech: "PyTorch, PyG, Streamlit",
     period: "Oct 2024 -- Dec 2025",
